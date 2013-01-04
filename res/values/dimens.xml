@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="side_spacing">50dp</dimen>
-    <dimen name="big_side_spacing">100dp</dimen>
+    <dimen name="side_spacing">20dp</dimen>
+    <dimen name="big_side_spacing">50dp</dimen>
+    
+    <dimen name="font_size">30sp</dimen>
 </resources>

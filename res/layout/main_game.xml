@@ -4,43 +4,66 @@
     android:layout_height="fill_parent"
     tools:context=".GameActivity" >
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/center"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/yellow" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_above="@id/center"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/green" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_marginRight="@dimen/big_side_spacing"
-        android:layout_toLeftOf="@id/center"
-        android:src="@drawable/red" />
-
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_marginLeft="@dimen/big_side_spacing"
-        android:layout_toRightOf="@id/center"
-        android:src="@drawable/blue" />
-
     <TextView
         android:id="@+id/center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:background="@color/generic_black"
         android:text="" />
+    
+    <ImageView
+        android:id="@+id/yellow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/side_spacing"
+        android:src="@drawable/yellow" />
+
+    <ImageView
+        android:id="@+id/green"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/side_spacing"
+        android:src="@drawable/green" />
+
+    <ImageView
+        android:id="@+id/red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/big_side_spacing"
+        android:layout_toLeftOf="@id/center"
+        android:src="@drawable/red" />
+
+    <ImageView
+        android:id="@+id/blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/big_side_spacing"
+        android:layout_toRightOf="@id/center"
+        android:src="@drawable/blue" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/score"
+        android:textSize="@dimen/font_size" />
+
+    <TextView
+        android:id="@+id/high_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/high_score"
+        android:textSize="@dimen/font_size" />
 
 </RelativeLayout>
