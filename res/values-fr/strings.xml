@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DPad Says</string>
+
+    <string name="score">Score: </string>
+    <string name="high_score">Score élevé: </string>
+    
+    <string name="sorry">Désolé !</string>
+    <string name="try_again">Veuillez réessayer.</string>
+
+    <string name="welcome">Bienvenue sur DPad Says!</string>
+    <string name="instructions_1">Utilisez le pavé directionnel pour jouer.</string>
+    <string name="instructions_2">Toucher le DPad pour commencer.</string>
+    
+    <string name="red">rouges</string>
+    <string name="blue">bleu</string>
+    <string name="green">verts</string>
+    <string name="yellow">jaune</string>
+    
+</resources>
