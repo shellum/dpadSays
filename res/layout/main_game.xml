@@ -19,6 +19,7 @@
         android:layout_below="@id/center"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/side_spacing"
+        android:contentDescription="@string/yellow"
         android:src="@drawable/yellow" />
 
     <ImageView
@@ -28,6 +29,7 @@
         android:layout_above="@id/center"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/side_spacing"
+        android:contentDescription="@string/green"
         android:src="@drawable/green" />
 
     <ImageView
@@ -37,6 +39,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/big_side_spacing"
         android:layout_toLeftOf="@id/center"
+        android:contentDescription="@string/red"
         android:src="@drawable/red" />
 
     <ImageView
@@ -46,6 +49,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/big_side_spacing"
         android:layout_toRightOf="@id/center"
+        android:contentDescription="@string/blue"
         android:src="@drawable/blue" />
 
     <TextView
@@ -66,4 +70,69 @@
         android:text="@string/high_score"
         android:textSize="@dimen/font_size" />
 
+    <LinearLayout
+        android:id="@+id/error_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@color/generic_black"
+        android:orientation="vertical"
+        android:padding="@dimen/side_spacing"
+        android:visibility="invisible" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/sorry"
+            android:textSize="@dimen/font_size" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/try_again"
+            android:textSize="@dimen/font_size" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/intro_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@color/generic_black"
+        android:orientation="vertical"
+        android:padding="@dimen/side_spacing" >
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/welcome"
+            android:textSize="@dimen/font_size" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/instructions_1"
+            android:textSize="@dimen/font_size" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:text="@string/instructions_2"
+            android:textSize="@dimen/font_size" />
+
+        </LinearLayout>
+    
+    
 </RelativeLayout>

@@ -4,28 +4,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class GameActivity extends Activity {
 
-	ImageView green;
-	ImageView red;
-	ImageView blue;
-	ImageView yellow;
+	//UI elements
+	private ImageView green;
+	private ImageView red;
+	private ImageView blue;
+	private ImageView yellow;
+	private LinearLayout errorBox;
+	private LinearLayout instructionsBox;
 	
-	boolean errorOn = false;
-	int current = -1;
+	//Tracking
+	private boolean errorOn = false;
+	private boolean instructionsOn = true;
+	private int current = -1;
 	
-	List<Integer> soFar = new ArrayList<Integer>();
-	SparseArray<SwitchButton> buttonMap = new SparseArray<SwitchButton>();
+	//Randomly generated sequence so far
+	private List<Integer> soFar = new ArrayList<Integer>();
+	//Mapping between color buttons and their keycode/flash status/etc data
+	private SparseArray<SwitchButton> buttonMap = new SparseArray<SwitchButton>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -33,143 +39,114 @@ public class GameActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_game);
 		
+		//Hook up all our UI views
 		green = (ImageView)findViewById(R.id.green);
 		blue = (ImageView)findViewById(R.id.blue);
 		red = (ImageView)findViewById(R.id.red);
 		yellow = (ImageView)findViewById(R.id.yellow);
-	
+		errorBox = (LinearLayout)findViewById(R.id.error_box);
+		instructionsBox = (LinearLayout)findViewById(R.id.intro_box);
+		
+		//Setup a lookup map for keycodes to UI
 		buttonMap.put(19, new SwitchButton(green));
 		buttonMap.put(20, new SwitchButton(yellow));
 		buttonMap.put(21, new SwitchButton(red));
 		buttonMap.put(22, new SwitchButton(blue));
 	}
 	
+	//Play the generated sequence back to the user
 	public void playSoFar()
 	{
 		flash(true, soFar.toArray(new Integer[soFar.size()]));
 	}
 	
+	//Pick a valid but random next sequence item
 	int getNextRand()
 	{
 		int next = ((int)(Math.random() * 1000)) % 4 + 19;
 		return next;
 	}
 	
+	//If the user is entering what they remember...
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event)
 	{
+		//Are instructions currently displayed?
+		//If so, get rid of them
+		if (instructionsOn) instructionsBox.setVisibility(View.GONE);
+
+		//Is an error message currently displayed?
 		if (errorOn)
 		{
+			//Get rid of it
 			errorOn = false;
-			//TODO:Hide x
+			errorBox.setVisibility(View.INVISIBLE);
 		}
 		
-		System.out.println("Pressed: " + keyCode + ", current:" + current);
+		
+		Log.d("Debug-log: ", "Pressed: " + keyCode + ", current:" + current);
+		
+		//If a game is not in progress and this is not a first shot at remembering a sequence...
 		if (current==-1)
 		{
+			//Generate a sequence item
 			soFar.add(getNextRand());
+			//Play back the sequence, and set the game to in progress
 			playSoFar();
 			current = 0;
 			return true;
 		}
-		
+		 
+		//If the game is in progress, make sure the user is remembering the correct next sequence item
 		if (keyCode == soFar.get(current))  { flash(false, keyCode); current++;}
+		//If they get it wrong...
 		else error();
 		
+		//If the user has entered the right sequence, and is at the end of the sequence...
 		if (current>=soFar.size())
 		{
+			//Extend the sequence
 			soFar.add(getNextRand());
 			playSoFar();
 			current=0;
 		}
 		
-		int highScoreValue = getHighScore(this);
+		//Update the high score if the user has passed the old high score
+		int highScoreValue = Util.getHighScore(this);
 		if (soFar.size() > highScoreValue)
 		{
 			highScoreValue = soFar.size();
-			setHighScore(soFar.size(), this);
+			Util.setHighScore(soFar.size(), this);
 		}
 		
+		//Update scoring in the UI
 		TextView score = (TextView)findViewById(R.id.score);
 		score.setText(getString(R.string.score) + soFar.size());
-
 		TextView highScore = (TextView)findViewById(R.id.high_score);
 		highScore.setText(getString(R.string.high_score) + highScoreValue);
 		
 		return true;
 	}
 	
+	//If the user entered a wrong sequence item...
 	public void error()
 	{
-		System.out.println("error!");
+		Log.d("Debug-log", "error!");
+		//Show an error message and take the game out of progress
 		errorOn = true;
-		//TODO:show x
+		errorBox.setVisibility(View.VISIBLE);
 		soFar = new ArrayList<Integer>();
 		current = -1;
 	}
 	
+	//Flash one or more items in sequence
 	public void flash(boolean delayBeforeStart, Integer... keyCode)
 	{
-		Sequencer s = new Sequencer(delayBeforeStart);
+		//Do it on an AsyncTask
+		Sequencer s = new Sequencer(this, delayBeforeStart, buttonMap);
 		s.execute(keyCode);
 	}
-	
-    public static int getHighScore(Context context)
-    {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE);
-        int highScore = sharedPreferences.getInt("highScore", 0);
 
-        return highScore;
-    }
-    
-    public static void setHighScore(int highScore, Context context)
-    {
-		Editor sharedPreferencesEditor = context.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE).edit();
-		sharedPreferencesEditor.putInt("highScore", highScore);
-		sharedPreferencesEditor.commit();
-    }
 
-	
-	private class Sequencer extends AsyncTask<Integer, Integer, Integer>
-	{
-		private boolean delayBeforeStart = false;
-		
-		public Sequencer(boolean delayBeforeStart)
-		{
-			this.delayBeforeStart = delayBeforeStart;
-		}
-		
-		@Override
-		protected Integer doInBackground(Integer... params)
-		{
-			if (delayBeforeStart) sleep(2000);
-			System.out.println("Start loop " + delayBeforeStart);
-			for (Integer i : params)
-			{
-				System.out.println("playing: " + i);
-				publishProgress(i);
-				sleep(150);
-				publishProgress(i);
-				sleep(150);
-			}
-			System.out.println("End loop");
-
-			return null;
-		}
-		
-		private void sleep(long ms)
-		{
-			try { Thread.sleep(ms); } catch (InterruptedException e) { e.printStackTrace(); }
-		}
-		
-		@Override
-		protected void onProgressUpdate(Integer... i)
-		{
-			SwitchButton b = buttonMap.get(i[0]);
-			b.change();
-		}
-		
-	}
-	
 
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Dice DPad</string>
+
+    <string name="score">Puntacion: </string>
+    <string name="high_score">Alta puntuación: </string>
+    
+    <string name="sorry">¡Lo sentimos!</string>
+    <string name="try_again">Por favor, inténtalo de nuevo.</string>
+
+    <string name="welcome">Bienvenido a Dice DPad!</string>
+    <string name="instructions_1">Utilizar el pad direccional para jugar.</string>
+    <string name="instructions_2">Pulse el DPad para comenzar.</string>
+    
+    <string name="red">rojo</string>
+    <string name="blue">azu</string>
+    <string name="green">verde</string>
+    <string name="yellow">amarillo</string>
+    
+</resources>
