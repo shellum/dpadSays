@@ -9,6 +9,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -47,6 +48,11 @@ public class GameActivity extends Activity {
 		errorBox = (LinearLayout)findViewById(R.id.error_box);
 		instructionsBox = (LinearLayout)findViewById(R.id.intro_box);
 		
+		green.setOnClickListener(new OnClickListener() {@Override public void onClick(View v) {	onKeyUp(19, null); }});
+		yellow.setOnClickListener(new OnClickListener() {@Override public void onClick(View v) { onKeyUp(20, null); }});
+		red.setOnClickListener(new OnClickListener() {@Override public void onClick(View v) { onKeyUp(21, null); }});
+		blue.setOnClickListener(new OnClickListener() {@Override public void onClick(View v) { onKeyUp(22, null); }});
+		
 		//Setup a lookup map for keycodes to UI
 		buttonMap.put(19, new SwitchButton(green));
 		buttonMap.put(20, new SwitchButton(yellow));
@@ -66,11 +72,17 @@ public class GameActivity extends Activity {
 		int next = ((int)(Math.random() * 1000)) % 4 + 19;
 		return next;
 	}
+
+	
 	
 	//If the user is entering what they remember...
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event)
 	{
+		super.onKeyUp(keyCode, event);
+		
+		if (keyCode <19 || keyCode > 22) return false;
+		
 		//Are instructions currently displayed?
 		//If so, get rid of them
 		if (instructionsOn) instructionsBox.setVisibility(View.GONE);
@@ -84,7 +96,7 @@ public class GameActivity extends Activity {
 		}
 		
 		
-		Log.d("Debug-log: ", "Pressed: " + keyCode + ", current:" + current);
+		if (BuildConfig.DEBUG) Log.d("Debug-log: ", "Pressed: " + keyCode + ", current:" + current);
 		
 		//If a game is not in progress and this is not a first shot at remembering a sequence...
 		if (current==-1)
@@ -127,11 +139,11 @@ public class GameActivity extends Activity {
 		
 		return true;
 	}
-	
+
 	//If the user entered a wrong sequence item...
 	public void error()
 	{
-		Log.d("Debug-log", "error!");
+		if (BuildConfig.DEBUG) Log.d("Debug-log:", "error!");
 		//Show an error message and take the game out of progress
 		errorOn = true;
 		errorBox.setVisibility(View.VISIBLE);
