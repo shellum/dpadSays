@@ -25,7 +25,7 @@ public class GameActivity extends Activity {
 	private LinearLayout instructionsBox;
 	
 	//Tracking
-	private boolean errorOn = false;
+	public boolean errorOn = false;
 	private boolean instructionsOn = true;
 	private int current = -1;
 	

@@ -7,7 +7,7 @@
     <string name="high_score">High score: </string>
     
     <string name="sorry">Sorry!</string>
-    <string name="try_again">Please try again.</string>
+    <string name="try_again">Hit the DPad to try again.</string>
 
     <string name="welcome">Welcome to DPad Says!</string>
     <string name="instructions_1">Use the Directional Pad to play.</string>

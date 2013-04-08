@@ -1,5 +1,6 @@
 package com.finalhack.dpadsays;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -17,19 +18,19 @@ public class Sequencer extends AsyncTask<Integer, Integer, Integer>
 	//But not if the user is trying to match the next sequence item
 	private boolean delayBeforeStart = false;
 	
-	private Context context;
+	private GameActivity gameActivity;
 	
 	//Save off the delay info
-	public Sequencer(Context context, boolean delayBeforeStart, SparseArray<SwitchButton> buttonMap)
+	public Sequencer(GameActivity context, boolean delayBeforeStart, SparseArray<SwitchButton> buttonMap)
 	{
-		this.context = context;
+		this.gameActivity = context;
 		this.delayBeforeStart = delayBeforeStart;
 		this.buttonMap = buttonMap;
 	}
 	
 	@Override
 	protected Integer doInBackground(Integer... params)
-	{
+	{		
 		//Wait before playing a full sequence
 		if (delayBeforeStart) sleep(2000);
 		
@@ -38,21 +39,24 @@ public class Sequencer extends AsyncTask<Integer, Integer, Integer>
 		//For each sequence item...
 		for (Integer i : params)
 		{
+			if (gameActivity.errorOn)
+				return null;
+			
 			Log.d("Debug-log", "playing: " + i);
 			//Flash off
 			publishProgress(i);
 			
-	    	MediaPlayer p=MediaPlayer.create(context, R.raw._19);
-	    	if (i==20) p = MediaPlayer.create(context,  R.raw._20);
-	    	if (i==21) p = MediaPlayer.create(context,  R.raw._21);
-	    	if (i==22) p = MediaPlayer.create(context,  R.raw._22);
+	    	MediaPlayer p=MediaPlayer.create(gameActivity, R.raw._19);
+	    	if (i==20) p = MediaPlayer.create(gameActivity,  R.raw._20);
+	    	if (i==21) p = MediaPlayer.create(gameActivity,  R.raw._21);
+	    	if (i==22) p = MediaPlayer.create(gameActivity,  R.raw._22);
 	    	p.setOnCompletionListener(new OnCompletionListener() {@Override public void onCompletion(MediaPlayer mp) { mp.release(); }});
 	    	p.start();
 			
-			sleep(100);
+			sleep(175);
 			//Flash on
 			publishProgress(i);
-			sleep(100);
+			sleep(75);
 		}
 		Log.d("Debug-log", "End loop");
 
