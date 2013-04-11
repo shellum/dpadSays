@@ -1,7 +1,5 @@
 package com.finalhack.dpadsays;
 
-import android.app.Activity;
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.AsyncTask;
