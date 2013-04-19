@@ -8,7 +8,7 @@ import android.util.SparseArray;
 
 //Our thread class that takes care of appropriate delays and the flashing of sequence items
 public class Sequencer extends AsyncTask<Integer, Integer, Integer>
-{
+{ 
 	//Track associated sequence item data
 	private SparseArray<SwitchButton> buttonMap = new SparseArray<SwitchButton>();
 	
@@ -16,14 +16,18 @@ public class Sequencer extends AsyncTask<Integer, Integer, Integer>
 	//But not if the user is trying to match the next sequence item
 	private boolean delayBeforeStart = false;
 	
+	//Track whether or not we're playing back a whole sequence
+	private boolean playback = false;
+	
 	private GameActivity gameActivity;
 	
 	//Save off the delay info
-	public Sequencer(GameActivity context, boolean delayBeforeStart, SparseArray<SwitchButton> buttonMap)
+	public Sequencer(GameActivity context, boolean delayBeforeStart, boolean playback, SparseArray<SwitchButton> buttonMap)
 	{
 		this.gameActivity = context;
 		this.delayBeforeStart = delayBeforeStart;
 		this.buttonMap = buttonMap;
+		this.playback = playback;
 	}
 	
 	@Override
@@ -51,10 +55,16 @@ public class Sequencer extends AsyncTask<Integer, Integer, Integer>
 	    	p.setOnCompletionListener(new OnCompletionListener() {@Override public void onCompletion(MediaPlayer mp) { mp.release(); }});
 	    	p.start();
 			
-			sleep(175);
+	    	if (playback)
+	    		sleep(175);
+	    	else
+	    		sleep(25);
 			//Flash on
 			publishProgress(i);
-			sleep(75);
+			if (playback)
+				sleep(75);
+			else
+				sleep(25);
 		}
 		Log.d("Debug-log", "End loop");
 

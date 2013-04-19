@@ -58,12 +58,14 @@ public class GameActivity extends Activity {
 		buttonMap.put(20, new SwitchButton(yellow));
 		buttonMap.put(21, new SwitchButton(red));
 		buttonMap.put(22, new SwitchButton(blue));
+		
+		updateScore();
 	}
 	
 	//Play the generated sequence back to the user
 	public void playSoFar()
 	{
-		flash(true, soFar.toArray(new Integer[soFar.size()]));
+		flash(true, true, soFar.toArray(new Integer[soFar.size()]));
 	}
 	
 	//Pick a valid but random next sequence item
@@ -110,19 +112,26 @@ public class GameActivity extends Activity {
 		}
 		 
 		//If the game is in progress, make sure the user is remembering the correct next sequence item
-		if (keyCode == soFar.get(current))  { flash(false, keyCode); current++;}
+		if (keyCode == soFar.get(current))  { flash(false, false, keyCode); current++;}
 		//If they get it wrong...
 		else error();
+				
 		
 		//If the user has entered the right sequence, and is at the end of the sequence...
 		if (current>=soFar.size())
-		{
+		{			
+			updateScore();
+			
 			//Extend the sequence
 			soFar.add(getNextRand());
 			playSoFar();
 			current=0;
 		}
 		
+		return true;
+	}
+
+	private void updateScore() {
 		//Update the high score if the user has passed the old high score
 		int highScoreValue = Util.getHighScore(this);
 		if (soFar.size() > highScoreValue)
@@ -136,8 +145,6 @@ public class GameActivity extends Activity {
 		score.setText(getString(R.string.score) + soFar.size());
 		TextView highScore = (TextView)findViewById(R.id.high_score);
 		highScore.setText(getString(R.string.high_score) + highScoreValue);
-		
-		return true;
 	}
 
 	//If the user entered a wrong sequence item...
@@ -152,10 +159,10 @@ public class GameActivity extends Activity {
 	}
 	
 	//Flash one or more items in sequence
-	public void flash(boolean delayBeforeStart, Integer... keyCode)
+	public void flash(boolean delayBeforeStart, boolean playback, Integer... keyCode)
 	{
 		//Do it on an AsyncTask
-		Sequencer s = new Sequencer(this, delayBeforeStart, buttonMap);
+		Sequencer s = new Sequencer(this, delayBeforeStart, playback, buttonMap);
 		s.execute(keyCode);
 	}
 
